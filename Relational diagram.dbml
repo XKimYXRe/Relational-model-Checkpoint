@@ -1,0 +1,37 @@
+// types of hotels
+Table types {
+  type_id     int      [pk, increment]
+  type_name   varchar
+}
+
+// room categories
+Table categories {
+  category_id   int      [pk, increment]
+  category_name varchar
+  price         decimal
+  beds_number   int
+}
+
+// hotels
+Table hotels {
+  hotel_id    int    [pk, increment]
+  hotel_name  varchar
+  type_id     int    [ref: > types.type_id]
+}
+
+// employees (self-referencing manager relationship)
+Table employees {
+  employee_id         int      [pk, increment]
+  employee_name       varchar
+  employee_specialty  varchar
+  hotel_id            int      [ref: > hotels.hotel_id]
+  manager_id          int?     [ref: > employees.employee_id] // nullable for top-level director
+}
+
+// rooms in each hotel
+Table rooms {
+  room_id      int    [pk, increment]
+  floor         int
+  hotel_id     int    [ref: > hotels.hotel_id]
+  category_id  int    [ref: > categories.category_id]
+}
